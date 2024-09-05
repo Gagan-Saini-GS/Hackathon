@@ -12,6 +12,8 @@ import {
 import { HackathonLevel } from '../../enum';
 import Button from '../common/Button';
 
+const today = new Date();
+
 const HackathonPage = () => {
     const navigate = useNavigate();
     const { hackathonId } = useParams();
@@ -25,7 +27,6 @@ const HackathonPage = () => {
     }, [hackathons]);
 
     const getHeading = (): string => {
-        const today = new Date();
         const startDate = new Date(hackathonDetails?.startDate || "");
         const endDate = new Date(hackathonDetails?.endDate || "");
 
@@ -36,6 +37,16 @@ const HackathonPage = () => {
         } else {
             return "Ended on";
         }
+    }
+
+    const getDate = (): string => {
+        const startDate = new Date(hackathonDetails?.startDate || "");
+        if (startDate > today) {
+            return formatDate(hackathonDetails?.startDate || "");
+        } else {
+            return formatDate(hackathonDetails?.endDate || "");
+        }
+        return "";
     }
 
     const getLevelIcon = (): React.ReactNode => {
@@ -49,7 +60,7 @@ const HackathonPage = () => {
             <div className='bg-PrimaryGreen/90 py-16 px-52 flex items-center justify-between'>
                 <div className='w-1/2'>
                     <div className='bg-Yellow rounded-md font-bold py-2 px-8 flex items-center mb-5'>
-                        <MdOutlineAccessTime className='w-5 h-5 mr-2 font-bold' /> {getHeading()} {formatDate(hackathonDetails?.startDate || "")} (Indian Standard Time)
+                        <MdOutlineAccessTime className='w-5 h-5 mr-2 font-bold' /> {getHeading()} {getDate()} (Indian Standard Time)
                     </div>
                     <div className='text-5xl text-White font-semibold mb-10'>{hackathonDetails?.name}</div>
                     <div className='text-lg text-White mb-10'>
